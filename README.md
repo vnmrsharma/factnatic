@@ -1,3 +1,10 @@
+##Navigation 
+The **final code** file is at the folder with name Main
+**Note**: please ignore the other notebooks that we have uploaded, they were just to keep the track and collobtatively work together.
+
+##How to execute
+-Its simple just download the notebook in the main folder and upload to your google collab or jupiter notebook, additionally we suggest to download the dataset from collab and mount it over your google drive to access it throughout the execution.
+
 ## Inspiration
 **Factnetic** was born from a deep desire to combat the insidious spread of fake news in our society. Our team saw the devastating impact that misinformation could have on individuals and entire communities. We were inspired to create a solution that could separate fact from fiction in a lightning-fast and accurate way, empowering people to make informed decisions and take action based on reliable information. We poured our hearts and minds into this project, determined to build a tool that could make a real difference in the fight against fake news. Factnetic is more than just a data model – it's a passion project that we hope will positively impact the world.
 
