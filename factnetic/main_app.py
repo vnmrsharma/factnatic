@@ -41,7 +41,7 @@ emotion_bar_fig = px.bar(emotion_df, x=emotion_df.emotion_analysis, y=emotion_df
 location_df = combined_df.copy()
 location_df["city"] = location_df["city"].apply(lambda x: str(''.join(x)))
 location_df = combined_df.groupby(['city'])["text"].count().to_frame().reset_index().rename(columns={"text":"frequency"})
-location_fig = px.choropleth(locations=location_df.city, locationmode="USA-states", color=location_df.frequency.to_list(), scope="usa")
+location_fig = px.choropleth(locations=location_df.city.to_list(), locationmode="USA-states", color=location_df.frequency.to_list(), scope="usa")
 
 def home_tab_layout():
     image_path = 'assets/icon_background.png'
@@ -140,47 +140,61 @@ def first_tab_layout():
                     ),
 
         ]),
-        
-        dbc.Row([ # 3rd row
-                    # dbc.Col(
-                    #             html.Div([
-        
-                                        
-                    #                     dbc.Label('Data Report in table format'),
 
-                    #                     html.Div([
-                    #                                 dash_table.DataTable(
-                    #                                     id='first_tab-reporting_datatable',
-                    #                                     columns=[
-                    #                                         {"name": i, "id": i} for i in df.columns
-                    #                                     ],
-                    #                                     data=df.to_dict('records'),
-                    #                                     # filter_action="native",
-                    #                                     sort_action="native",
-                    #                                     sort_mode="multi",
-                    #                                     column_selectable="single",
-                    #                                     selected_columns=[],
-                    #                                     selected_rows=[],
-                    #                                     page_action="native",
-                    #                                     page_current= 0,
-                    #                                     page_size= 15,
-                    #                                 ),
-                    #                                 html.Div(id='datatable-interactivity-container')
-                    #                             ])
-                                        
-                    #                 ]), width = 12
-                    # ),
+        dbc.Row([ 
                     dbc.Col(
                                 html.Div([
+                                        
 
-                                        dcc.Graph(id="first_tab-location_graph"),
+                                        # dcc.Graph(figure=fig)
+
+                                        dcc.Graph(id="first_tab-sentiment_bar_graph", figure=location_fig),
                                     
                                     ]), width = 12
                     ),
-                    dbc.Col(html.Div([]))
-                    
 
         ]),
+        
+        # dbc.Row([ # 3rd row
+        #             # dbc.Col(
+        #             #             html.Div([
+        
+                                        
+        #             #                     dbc.Label('Data Report in table format'),
+
+        #             #                     html.Div([
+        #             #                                 dash_table.DataTable(
+        #             #                                     id='first_tab-reporting_datatable',
+        #             #                                     columns=[
+        #             #                                         {"name": i, "id": i} for i in df.columns
+        #             #                                     ],
+        #             #                                     data=df.to_dict('records'),
+        #             #                                     # filter_action="native",
+        #             #                                     sort_action="native",
+        #             #                                     sort_mode="multi",
+        #             #                                     column_selectable="single",
+        #             #                                     selected_columns=[],
+        #             #                                     selected_rows=[],
+        #             #                                     page_action="native",
+        #             #                                     page_current= 0,
+        #             #                                     page_size= 15,
+        #             #                                 ),
+        #             #                                 html.Div(id='datatable-interactivity-container')
+        #             #                             ])
+                                        
+        #             #                 ]), width = 12
+        #             # ),
+        #             dbc.Col(
+        #                         html.Div([
+
+        #                                 dcc.Graph(id="first_tab-location_graph"),
+                                    
+        #                             ]), width = 12
+        #             ),
+        #             dbc.Col(html.Div([]))
+                    
+
+        # ]),
         
         dbc.Row([ # 3rd row - quality graph plot
         
