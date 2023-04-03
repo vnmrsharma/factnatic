@@ -1,6 +1,6 @@
 ## Navigation 
 The **final code** file is at the folder with name Main<br>
-There are codes for the final website consisting all the visualisations and two notebooks outside are for the purpose of data cleaning and topic modeling then follwed by the sentiment analyisis, emotional analysis, and geo-locations representation.
+There are codes for the final website consisting all the visualisations and one notebooks outside are for the purpose of data cleaning and topic modeling then follwed by the notebook inside consisting whole further process of sentiment analyisis, emotional analysis, and geo-locations representation.
 
 **Note**: please ignore the other folders that we have uploaded, they were just to keep the track and collobtatively work together.
 
