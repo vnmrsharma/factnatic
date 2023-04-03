@@ -147,7 +147,40 @@ def first_tab_layout():
     ]
 
     return layout
+
+def second_tab_layout():
+
+    plot1_path = 'plots/Count of True and False news.png'
+    plot2_path = 'plots/word_cloud_0.png'
+    plot3_path = 'plots/word_cloud_1.png'
+    plot4_path = 'plots/word_cloud_2.png'
+    plot5_path = 'plots/word_cloud_3.png'
+
+
+
+    layout =[
+                 dbc.Row(
+                        html.Img(src=plot1_path)
+                 ),
+                 dbc.Row(
+                        html.Img(src=plot2_path)
+                 ),
+                 dbc.Row(
+                        html.Img(src=plot3_path)
+                 ),
+                 dbc.Row(
+                        html.Img(src=plot4_path)
+                 ),
+                 dbc.Row(
+                        html.Img(src=plot5_path)
+                 ),
+
+    ]
+
+    return layout
      
+
+
 encoded_image2 = base64.b64encode(open('assets/icon_png_2.png', 'rb').read())
 
 app = Dash(    __name__, 
@@ -192,7 +225,8 @@ app.layout = html.Div([
         dbc.Tabs(
             [   
                 dbc.Tab(label='Home', tab_id='home_tab'),
-                dbc.Tab(label='Data reporting', tab_id='first_tab'),
+                dbc.Tab(label='Insights', tab_id='first_tab'),
+                dbc.Tab(label='Data quality', tab_id='second_tab'),
                 # dbc.Tab(label='EPS', tab_id='eps-tab'),
             ],
             id='tab-menu', 
@@ -225,6 +259,9 @@ def display_tab(active_tab):
     
     elif active_tab == 'first_tab':
         layout = first_tab_layout()
+
+    elif active_tab == 'second_tab':
+        layout = second_tab_layout()
 
     return layout
 
