@@ -15,6 +15,7 @@ High-level layout of the program includes the page header, tab menu, and a place
 
 '''
 
+# from pysentimiento import create_analyzer
 # variable initialization
 
 # df = pd.DataFrame()
@@ -42,20 +43,22 @@ location_df = combined_df.copy()
 location_df["city"] = location_df["city"].apply(lambda x: str(''.join(x)))
 location_df = combined_df.groupby(['city'])["text"].count().to_frame().reset_index().rename(columns={"text":"frequency"})
 # location_fig = px.choropleth(locations=location_df.city.to_list(), locationmode="USA-states", color=location_df.frequency.to_list(), scope="usa")
-location_fig = px.choropleth(title = "Location echo", ocations=["CA","TX","NY", "LA", "AB"], locationmode="USA-states", color=[1,2,5], scope="north america")
+location_fig = px.choropleth(title = "Location echo", locations=["CA","TX","NY", "LA", "AB"], locationmode="USA-states", color=[1,2,5, 2,3], scope="north america")
+location_fig.update_layout(margin=dict(l=60, r=60, t=50, b=50))
+# location_fig.update_layout(autosize=True)
 
 def home_tab_layout():
     image_path = 'assets/icon_background.png'
 
     layout =[
-                dbc.Row(
-                        html.I("Quick sentiment analysis"),
-                        html.Br(),
-                        html.Br(),
-                        dcc.Input(id="input1", type="text", placeholder="", style={'marginRight':'10px'}),
-                        html.Br(),
-                        html.Div(id="output"),
-                 )
+                # dbc.Row(
+                #         html.H1("Quick sentiment analysis"),
+                #         # html.Br(),
+                #         # html.Br(),
+                #         dcc.Input(id="input1", type="text", placeholder=""),
+                #         # html.Br(),
+                #         html.Div(id="output_text"),
+                #  ),
 
                 dbc.Row(
                         html.Img(src=image_path)
@@ -391,12 +394,12 @@ def display_tab(active_tab):
 
 
 
-@app.callback(
-    Output("output", "children"),
-    Input("input1", "value"),
-)
-def update_output(input1):
-    return u'Input 1 {} and Input 2 {}'.format(input1)
+# @app.callback(
+#     Output("output_text", "children"),
+#     Input("input1", "value"),
+# )
+# def update_output(input1):
+#     return 'The sentiment anlysis is: {}'.format(input1)
 
 # @app.callback(
 #     Output("first_tab-location_graph", "figure"), 
@@ -414,6 +417,6 @@ def update_output(input1):
 
 if __name__ == '__main__':
             
-    app.run_server(debug=True, host='0.0.0.0', port=1001) #, use_reloader=False, dev_tools_ui=True)
+    app.run_server(debug=False, host='0.0.0.0', port=1001) #, use_reloader=False, dev_tools_ui=True)
         
         
