@@ -1,8 +1,8 @@
-##Navigation 
+## Navigation 
 The **final code** file is at the folder with name Main
 **Note**: please ignore the other notebooks that we have uploaded, they were just to keep the track and collobtatively work together.
 
-##How to execute
+## How to execute
 -Its simple just download the notebook in the main folder and upload to your google collab or jupiter notebook, additionally we suggest to download the dataset from collab and mount it over your google drive to access it throughout the execution.
 
 ## Inspiration
