@@ -1,6 +1,8 @@
 ## Navigation 
 The **final code** file is at the folder with name Main
-**Note**: please ignore the other notebooks that we have uploaded, they were just to keep the track and collobtatively work together.
+There are codes for the final website consisting all the visualisations and two notebooks outside are for the purpose of data cleaning and topic modeling then follwed by the sentiment analyisis, emotional analysis, and geo-locations representation.
+
+**Note**: please ignore the other folders that we have uploaded, they were just to keep the track and collobtatively work together.
 
 ## How to execute
 -Its simple just download the notebook in the main folder and upload to your google collab or jupiter notebook, additionally we suggest to download the dataset from collab and mount it over your google drive to access it throughout the execution.
