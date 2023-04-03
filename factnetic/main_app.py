@@ -21,6 +21,28 @@ High-level layout of the program includes the page header, tab menu, and a place
 df = px.data.election()
 geojson = px.data.election_geojson()
 
+
+combined_df = pd.read_csv('data\Cleaned_1.csv')
+
+
+# sentiment df
+sentiment_df_color_discrete_map = {'Negative ☹️': 'rgb(255,0,0)', 'Positive 🙂': 'rgb(0,255,0)', 'Neutral 😐': 'rgb(76,134,252)'}
+sentiment_df = combined_df.groupby(['sentiment_analysis'])["text"].count().to_frame().reset_index().rename(columns={"text":"frequency"}).replace({'NEG': 'Negative ☹️', 'NEU': 'Neutral 😐', 'POS': 'Positive 🙂'}, regex=True)
+sentiment_bar_fig = px.bar(sentiment_df, x=sentiment_df.sentiment_analysis, y=sentiment_df.frequency, title = "Sentiment analysis", color=sentiment_df.sentiment_analysis, color_discrete_map = sentiment_df_color_discrete_map)
+
+
+# sentiment df
+emotion_df_color_discrete_map = {'Others 🤔': 'rgb(76,134,252)', 'Joy 😀': 'rgb(255,255,0)', 'Disgust 🤢': 'rgb(212, 217, 119)'}
+emotion_df = combined_df.groupby(['emotion_analysis'])["text"].count().to_frame().reset_index().rename(columns={"text":"frequency"}).replace({'others': 'Others 🤔', 'joy': 'Joy 😀', 'disgust': 'Disgust 🤢'}, regex=True)
+emotion_bar_fig = px.bar(emotion_df, x=emotion_df.emotion_analysis, y=emotion_df.frequency, title = "Emotion analysis", color=emotion_df.emotion_analysis, color_discrete_map = emotion_df_color_discrete_map)
+
+
+# location
+location_df = combined_df.copy()
+location_df["city"] = location_df["city"].apply(lambda x: str(''.join(x)))
+location_df = combined_df.groupby(['city'])["text"].count().to_frame().reset_index().rename(columns={"text":"frequency"})
+location_fig = px.choropleth(locations=location_df.city, locationmode="USA-states", color=location_df.frequency.to_list(), scope="usa")
+
 def home_tab_layout():
     image_path = 'assets/icon_background.png'
 
@@ -36,62 +58,90 @@ def first_tab_layout():
     layout = [
         #grid layout using row and col to place div accordingly
         dbc.Row([ #first row
-                dbc.Col(
-                            html.Div([
-                                    dbc.Label('Location'),
-                                    dcc.Dropdown(id='first_tab-location',
-                                        options=[
-                                                    {'label': 'India', 'value': 'india'},
-                                                    {'label': 'Uniteed States of America', 'value': 'usa'},
-                                                    {'label': 'Canada', 'value': 'canada'},
-                                                    {'label': 'China', 'value': 'china'},
-                                                    {'label': 'Russia', 'value': 'russia'},
-                                                ],
-                                        value=None,
-                                        clearable=False
-                                    ),
-                                ]),width=2
-                        ),
+                # dbc.Col(
+                #             html.Div([
+                #                     dbc.Label('Location'),
+                #                     dcc.Dropdown(id='first_tab-location',
+                #                         options=[
+                #                                     {'label': 'India', 'value': 'india'},
+                #                                     {'label': 'Uniteed States of America', 'value': 'usa'},
+                #                                     {'label': 'Canada', 'value': 'canada'},
+                #                                     {'label': 'China', 'value': 'china'},
+                #                                     {'label': 'Russia', 'value': 'russia'},
+                #                                 ],
+                #                         value=None,
+                #                         clearable=False
+                #                     ),
+                #                 ]),width=2
+                #         ),
 
-                dbc.Col(
-                            html.Div([
-                                    dbc.Label('Sentiment'),
-                                    dcc.Dropdown(id='first_tab-sentiment',
-                                        options= [
-                                                    {'label': 'Positive', 'value': 'pos'},
-                                                    {'label': 'Neutral', 'value': 'neu'},
-                                                    {'label': 'Negative', 'value': 'neg'},
-                                                ],
-                                        value=None,
-                                        clearable=False
-                                    ),
-                                ]),width=1
-                        ), 
+                # dbc.Col(
+                #             html.Div([
+                #                     dbc.Label('Sentiment'),
+                #                     dcc.Dropdown(id='first_tab-sentiment',
+                #                         options= [
+                #                                     {'label': 'Positive', 'value': 'pos'},
+                #                                     {'label': 'Neutral', 'value': 'neu'},
+                #                                     {'label': 'Negative', 'value': 'neg'},
+                #                                 ],
+                #                         value=None,
+                #                         clearable=False
+                #                     ),
+                #                 ]),width=1
+                #         ), 
 
-                dbc.Col(
-                            html.Div([
-                                    dcc.RadioItems(
-                                                    id='candidate', 
-                                                    options=["Joly", "Coderre", "Bergeron"],
-                                                    value="Coderre",
-                                                    inline=True
-                                                ),
-                                ]),width=2
-                        ), 
-                dbc.Col(
-                            html.Div([
-                                    dbc.Label('Graph switch'),
-                                    daq.BooleanSwitch(
-                                                        id = 'first_tab-graph_switch',
-                                                        on=True,
-                                                        className='dark-theme-control'
-                                                    ),
-                                ]),width=2
-                        ),    
+                # dbc.Col(
+                #             html.Div([
+                #                     dcc.RadioItems(
+                #                                     id='candidate', 
+                #                                     options=["Joly", "Coderre", "Bergeron"],
+                #                                     value="Coderre",
+                #                                     inline=True
+                #                                 ),
+                #                 ]),width=2
+                #         ), 
+                # dbc.Col(
+                #             html.Div([
+                #                     dbc.Label('Graph switch'),
+                #                     daq.BooleanSwitch(
+                #                                         id = 'first_tab-graph_switch',
+                #                                         on=True,
+                #                                         className='dark-theme-control'
+                #                                     ),
+                #                 ]),width=2
+                #         ),    
         
         ]),
+
+        dbc.Row([ 
+                    dbc.Col(
+                                html.Div([
+                                        
+
+                                        # dcc.Graph(figure=fig)
+
+                                        dcc.Graph(id="first_tab-sentiment_bar_graph", figure=sentiment_bar_fig),
+                                    
+                                    ]), width = 12
+                    ),
+
+        ]),
+
+        dbc.Row([ 
+                    dbc.Col(
+                                html.Div([
+                                        
+
+                                        # dcc.Graph(figure=fig)
+
+                                        dcc.Graph(id="first_tab-sentiment_bar_graph", figure=emotion_bar_fig),
+                                    
+                                    ]), width = 12
+                    ),
+
+        ]),
         
-        dbc.Row([ # 2nd row
+        dbc.Row([ # 3rd row
                     # dbc.Col(
                     #             html.Div([
         
@@ -150,35 +200,85 @@ def first_tab_layout():
 
 def second_tab_layout():
 
-    plot1_path = 'plots/Count of True and False news.png'
-    plot2_path = 'plots/word_cloud_0.png'
-    plot3_path = 'plots/word_cloud_1.png'
-    plot4_path = 'plots/word_cloud_2.png'
-    plot5_path = 'plots/word_cloud_3.png'
+    # plot1_path = 'plots/Count of True and False news.png'
+    plot1_path = base64.b64encode(open('plots/Count of True and False news.png', 'rb').read())
+
+    # plot2_path = 'plots/word_cloud_0.png'
+    plot2_path = base64.b64encode(open('plots/word_cloud_0.png', 'rb').read())
+
+    # plot3_path = 'plots/word_cloud_1.png'
+    plot3_path = base64.b64encode(open('plots/word_cloud_1.png', 'rb').read())
+
+    # plot4_path = 'plots/word_cloud_2.png'
+    plot4_path = base64.b64encode(open('plots/word_cloud_2.png', 'rb').read())
+
+    # plot5_path = 'plots/word_cloud_3.png'
+    plot5_path = base64.b64encode(open('plots/word_cloud_3.png', 'rb').read())
+
 
 
 
     layout =[
-                 dbc.Row(
-                        html.Img(src=plot1_path)
+                dbc.Row(
+                        html.Div(
+                                html.Img(   
+                                            title = "factnetic",
+                                            src='data:image/png;base64,{}'.format(plot1_path.decode()), 
+                                            style={'height':'90%', 'width':'50%'}
+                                )
+                        )
+                        # html.Img(title = "factnetic",height="100px", width = "136px", src='data:image/png;base64,{}'.format(plot1_path.decode())),
+
                  ),
-                 dbc.Row(
-                        html.Img(src=plot2_path)
+
+                dbc.Row(
+                        html.Div(
+                                html.Img(   
+                                            title = "factnetic",
+                                            src='data:image/png;base64,{}'.format(plot2_path.decode()), 
+                                            style={'height':'100%', 'width':'100%'}
+                                )
+                        )
+                        # html.Img(title = "factnetic",height="100px", width = "136px", src='data:image/png;base64,{}'.format(plot1_path.decode())),
+
                  ),
-                 dbc.Row(
-                        html.Img(src=plot3_path)
+                dbc.Row(
+                        html.Div(
+                                html.Img(   
+                                            title = "factnetic",
+                                            src='data:image/png;base64,{}'.format(plot3_path.decode()), 
+                                            style={'height':'100%', 'width':'100%'}
+                                )
+                        )
+                        # html.Img(title = "factnetic",height="100px", width = "136px", src='data:image/png;base64,{}'.format(plot1_path.decode())),
+
                  ),
-                 dbc.Row(
-                        html.Img(src=plot4_path)
+                dbc.Row(
+                        html.Div(
+                                html.Img(   
+                                            title = "factnetic",
+                                            src='data:image/png;base64,{}'.format(plot4_path.decode()), 
+                                            style={'height':'100%', 'width':'100%'}
+                                )
+                        )
+                        # html.Img(title = "factnetic",height="100px", width = "136px", src='data:image/png;base64,{}'.format(plot1_path.decode())),
+
                  ),
-                 dbc.Row(
-                        html.Img(src=plot5_path)
+                dbc.Row(
+                        html.Div(
+                                html.Img(   
+                                            title = "factnetic",
+                                            src='data:image/png;base64,{}'.format(plot5_path.decode()), 
+                                            style={'height':'100%', 'width':'100%'}
+                                )
+                        )
+                        # html.Img(title = "factnetic",height="100px", width = "136px", src='data:image/png;base64,{}'.format(plot1_path.decode())),
+
                  ),
 
     ]
 
     return layout
-     
 
 
 encoded_image2 = base64.b64encode(open('assets/icon_png_2.png', 'rb').read())
@@ -266,19 +366,19 @@ def display_tab(active_tab):
     return layout
 
 
-@app.callback(
-    Output("first_tab-location_graph", "figure"), 
-    Input("candidate", "value"))
-def display_choropleth(candidate):
-    df = px.data.election() # replace with your own data source
-    geojson = px.data.election_geojson()
-    fig = px.choropleth(
-        df, geojson=geojson, color=candidate,
-        locations="district", featureidkey="properties.district",
-        projection="mercator", range_color=[0, 6500])
-    fig.update_geos(fitbounds="locations", visible=False)
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-    return fig
+# @app.callback(
+#     Output("first_tab-location_graph", "figure"), 
+#     Input("candidate", "value"))
+# def display_choropleth(candidate):
+#     df = px.data.election() # replace with your own data source
+#     geojson = px.data.election_geojson()
+#     fig = px.choropleth(
+#         df, geojson=geojson, color=candidate,
+#         locations="district", featureidkey="properties.district",
+#         projection="mercator", range_color=[0, 6500])
+#     fig.update_geos(fitbounds="locations", visible=False)
+#     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+#     return fig
 
 if __name__ == '__main__':
             
